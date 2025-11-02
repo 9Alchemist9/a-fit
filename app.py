@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 from flask import Flask, request, jsonify
 from datetime import datetime
 from flask import Flask, request, jsonify, render_template # Adicione render_template aqui
-
+import os
 
 # --- CONFIGURAÇÃO ---
 # Altere estas variáveis com seus dados
