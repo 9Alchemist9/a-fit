@@ -8,9 +8,9 @@ from flask import Flask, request, jsonify, render_template # Adicione render_tem
 
 # --- CONFIGURAÇÃO ---
 # Altere estas variáveis com seus dados
-MEU_EMAIL = "alckmindiego@gmail.com"  # O e-mail que vai receber a notificação
-SENHA_DE_APP = "cnsz wyqp zeez gkws" # A senha de app que você vai gerar no Gmail
-NOME_DO_REMETENTE = "Notificação de Assessoria"
+MEU_EMAIL = os.environ.get("MEU_EMAIL")
+SENHA_DE_APP = os.environ.get("SENHA_DE_APP")
+NOME_DO_REMETENTE = "Notificação A-FIT"
 
 # --- INICIALIZAÇÃO DO APP FLASK ---
 app = Flask(__name__)
