@@ -1,0 +1,47 @@
+/* Centraliza o conteúdo principal e limita a largura para melhor leitura */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f3f4f6;
+}
+
+main.container {
+    max-width: 768px;
+    width: 100%;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Melhora o espaçamento e a aparência do formulário */
+form fieldset {
+    margin-bottom: 1.5rem;
+}
+
+form label {
+    margin-bottom: 1rem;
+}
+
+form small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--pico-secondary);
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Estilo para a mensagem de feedback */
+#feedback-message.success {
+    color: var(--pico-color-green-500);
+    font-weight: bold;
+}
+
+#feedback-message.error {
+    color: var(--pico-color-red-500);
+    font-weight: bold;
+}

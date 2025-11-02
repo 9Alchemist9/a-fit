@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessoria Fitness - Planos e Serviços</title>
+    <!-- Pico.css para um design minimalista e responsivo -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <!-- Nosso arquivo de estilos personalizados -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1 class="text-center">Escolha seu Plano de Assessoria</h1>
+            <p class="text-center">Invista na sua saúde e performance com um acompanhamento profissional.</p>
+        </header>
+
+        <form id="assessoria-form">
+            <fieldset>
+                <legend>Planos Disponíveis</legend>
+                <label>
+                    <input type="radio" name="servico" value="Assessoria Online" data-valor="150.00" required>
+                    <strong>Assessoria Online - R$ 150,00/mês</strong>
+                    <small>Planilhas de treino personalizadas, feedback semanal e suporte via WhatsApp.</small>
+                </label>
+                <label>
+                    <input type="radio" name="servico" value="Sessão Avulsa Presencial" data-valor="120.00" required>
+                    <strong>Sessão Avulsa Presencial - R$ 120,00/sessão</strong>
+                    <small>Uma sessão de treino presencial de 1 hora para ajuste de técnica e intensidade.</small>
+                </label>
+                <label>
+                    <input type="radio" name="servico" value="Plano Híbrido" data-valor="500.00" required>
+                    <strong>Plano Híbrido (Online + 4 Sessões ) - R$ 500,00/mês</strong>
+                    <small>Assessoria online completa mais 4 sessões presenciais no mês (1 por semana).</small>
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Seus Dados</legend>
+                <label for="nome">Nome Completo</label>
+                <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="seu.melhor@email.com" required>
+
+                <label for="telefone">Telefone (WhatsApp)</label>
+                <input type="tel" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" required>
+            </fieldset>
+
+            <button type="submit" id="submit-button">Quero Começar!</button>
+        </form>
+        
+        <!-- Mensagem de feedback para o usuário -->
+        <p id="feedback-message" class="text-center"></p>
+
+    </main>
+
+    <!-- Nosso arquivo de script -->
+    <script src="/static/script.js"></script>
+</body>
+</html>
