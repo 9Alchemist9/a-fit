@@ -45,3 +45,28 @@ form small {
     color: var(--pico-color-red-500);
     font-weight: bold;
 }
+/* Estilos para o novo cabeçalho personalizado */
+.header-personalizado {
+    text-align: center; /* Centraliza todo o conteúdo do header */
+    margin-bottom: 2rem; /* Adiciona um espaço abaixo do header */
+}
+
+.logo {
+    width: 250px; /* Define a largura da imagem */
+    height: 250px; /* Define a altura da imagem */
+    border-radius: 50%; /* Deixa a imagem perfeitamente redonda */
+    object-fit: cover; /* Garante que a imagem preencha o círculo sem distorcer */
+    margin-bottom: 1rem; /* Adiciona um espaço abaixo da imagem */
+    border: 3px solid var(--pico-primary); /* Adiciona uma borda sutil com a cor primária do tema */
+}
+
+.header-personalizado h1 {
+    margin-bottom: 0.25rem; /* Diminui o espaço abaixo do título principal */
+    font-size: 2.2rem; /* Aumenta um pouco o tamanho da fonte do seu nome */
+}
+
+.header-personalizado p {
+    margin: 0; /* Remove a margem do parágrafo */
+    font-size: 1.1rem;
+    color: var(--pico-secondary); /* Usa uma cor secundária para o subtítulo */
+}
