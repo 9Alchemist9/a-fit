@@ -8,7 +8,8 @@ body {
 }
 
 main.container {
-    max-width: 768px;
+    max-width: 1200px;
+    /* Aumentamos a largura máxima para o layout horizontal */
     width: 100%;
     padding: 2rem;
     background-color: white;
@@ -19,16 +20,7 @@ main.container {
 /* Melhora o espaçamento e a aparência do formulário */
 form fieldset {
     margin-bottom: 1.5rem;
-}
-
-form label {
-    margin-bottom: 1rem;
-}
-
-form small {
-    display: block;
-    margin-top: 0.25rem;
-    color: var(--pico-secondary);
+    padding-bottom: 0;
 }
 
 .text-center {
@@ -45,28 +37,94 @@ form small {
     color: var(--pico-color-red-500);
     font-weight: bold;
 }
+
 /* Estilos para o novo cabeçalho personalizado */
 .header-personalizado {
-    text-align: center; /* Centraliza todo o conteúdo do header */
-    margin-bottom: 2rem; /* Adiciona um espaço abaixo do header */
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .logo {
-    width: 250px; /* Define a largura da imagem */
-    height: 250px; /* Define a altura da imagem */
-    border-radius: 50%; /* Deixa a imagem perfeitamente redonda */
-    object-fit: cover; /* Garante que a imagem preencha o círculo sem distorcer */
-    margin-bottom: 1rem; /* Adiciona um espaço abaixo da imagem */
-    border: 3px solid var(--pico-primary); /* Adiciona uma borda sutil com a cor primária do tema */
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid var(--pico-primary);
 }
 
 .header-personalizado h1 {
-    margin-bottom: 0.25rem; /* Diminui o espaço abaixo do título principal */
-    font-size: 2.2rem; /* Aumenta um pouco o tamanho da fonte do seu nome */
+    margin-bottom: 0.25rem;
+    font-size: 2.2rem;
 }
 
 .header-personalizado p {
-    margin: 0; /* Remove a margem do parágrafo */
+    margin: 0;
     font-size: 1.1rem;
-    color: var(--pico-secondary); /* Usa uma cor secundária para o subtítulo */
+    color: var(--pico-secondary);
+}
+
+/* Estilos para o novo seletor de planos */
+.hidden {
+    display: none;
+}
+
+/* NOVO: Layout horizontal para os cards */
+.grid-horizontal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.card-modalidade {
+    border: 2px solid var(--pico-form-element-border-color);
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.card-modalidade.selected {
+    border-color: var(--pico-primary);
+}
+
+.card-modalidade h4 {
+    font-size: 1.25rem;
+}
+
+.card-modalidade p {
+    font-size: 0.95rem;
+    color: var(--pico-secondary);
+}
+
+.card-modalidade ul {
+    font-size: 0.9rem;
+    padding-left: 1.2rem;
+    margin-top: 1rem;
+    flex-grow: 1;
+    /* Faz a lista ocupar o espaço disponível, alinhando os botões */
+}
+
+.card-modalidade footer {
+    padding-bottom: 1rem;
+    margin-top: 1.5rem;
+    background-color: transparent;
+    border-top: none;
+    text-align: center;
+}
+
+
+#resultado-plano {
+    text-align: center;
+    background-color: var(--pico-primary-background);
+    padding: 2rem;
+    border-radius: var(--pico-border-radius);
+    margin-top: 2rem;
+}
+
+#resultado-plano h2 {
+    color: var(--pico-primary);
+    font-size: 2.5rem;
+    margin: 0;
 }

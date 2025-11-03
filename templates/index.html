@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assessoria Fitness - Planos e Serviços</title>
+    <title>A-FIT - Assessoria em Treinamento Físico</title>
     <!-- Pico.css para um design minimalista e responsivo -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <!-- Nosso arquivo de estilos personalizados -->
@@ -19,45 +19,110 @@
             <p>Assessoria em Treinamento Físico</p>
         </header>
 
-
         <form id="assessoria-form">
+            <!-- Passo 1: Escolha da Modalidade -->
             <fieldset>
-                <legend>Planos Disponíveis</legend>
-                <label>
-                    <input type="radio" name="servico" value="Assessoria Online" data-valor="150.00" required>
-                    <strong>Assessoria Online - R$ 150,00/mês</strong>
-                    <small>Planilhas de treino personalizadas, feedback semanal e suporte via WhatsApp.</small>
-                </label>
-                <label>
-                    <input type="radio" name="servico" value="Sessão Avulsa Presencial" data-valor="120.00" required>
-                    <strong>Sessão Avulsa Presencial - R$ 120,00/sessão</strong>
-                    <small>Uma sessão de treino presencial de 1 hora para ajuste de técnica e intensidade.</small>
-                </label>
-                <label>
-                    <input type="radio" name="servico" value="Plano Híbrido" data-valor="500.00" required>
-                    <strong>Plano Híbrido (Online + 4 Sessões ) - R$ 500,00/mês</strong>
-                    <small>Assessoria online completa mais 4 sessões presenciais no mês (1 por semana).</small>
-                </label>
+                <legend>Passo 1: Escolha a Modalidade</legend>
+                <div class="grid-horizontal">
+                    <!-- Card Assessoria Online -->
+                    <article class="card-modalidade" data-modalidade="Online">
+                        <div class="card-content">
+                            <h4>Assessoria Online</h4>
+                            <p>Ideal para quem busca máxima eficiência e flexibilidade, sem a necessidade de encontros presenciais.</p>
+                            <ul>
+                                <li><strong>Prescrição de treino</strong> via aplicativo com vídeos e instruções detalhadas.</li>
+                                <li><strong>Acompanhamento diário</strong> de progresso e ajustes estratégicos.</li>
+                                <li><strong>Canal direto no WhatsApp</strong> para dúvidas, correções e suporte contínuo.</li>
+                                <li><strong>Adaptações para viagens</strong> e mudanças de rotina, mantendo seu progresso.</li>
+                            </ul>
+                        </div>
+                        <footer><a href="#" role="button" class="contrast" data-modalidade-btn="Online">Ver Planos</a></footer>
+                    </article>
+
+                    <!-- Card Sessões Presenciais -->
+                    <article class="card-modalidade" data-modalidade="Presencial">
+                        <div class="card-content">
+                            <h4>Sessões Presenciais</h4>
+                            <p>Ideal para quem valoriza a experiência prática, o ajuste técnico imediato e o acompanhamento próximo.</p>
+                            <ul>
+                                <li><strong>Sessões de até 90 minutos</strong> planejadas para máxima eficiência e segurança.</li>
+                                <li><strong>Correção minuciosa</strong> da execução, postura e padrão de movimento.</li>
+                                <li><strong>Controle de cargas</strong> e progressão com método estruturado para evolução.</li>
+                                <li><strong>Ambiente controlado</strong> e atenção total aos detalhes do seu treino.</li>
+                            </ul>
+                        </div>
+                        <footer><a href="#" role="button" class="contrast" data-modalidade-btn="Presencial">Ver Planos</a></footer>
+                    </article>
+
+                    <!-- Card Modelo Híbrido -->
+                    <article class="card-modalidade" data-modalidade="Híbrido">
+                        <div class="card-content">
+                            <h4>Plano Híbrido</h4>
+                            <p>A solução completa que une o suporte diário online com a intensidade das aulas presenciais para resultados acelerados.</p>
+                            <ul>
+                                <li><strong>Treinos presenciais</strong> para execução técnica precisa e progresso acelerado.</li>
+                                <li><strong>Acesso total ao App</strong> com treinos, vídeos e métricas detalhadas.</li>
+                                <li><strong>Acompanhamento contínuo</strong> via WhatsApp para suporte fora das aulas.</li>
+                                <li><strong>Relatórios claros</strong> de desempenho para uma evolução consistente e monitorada.</li>
+                            </ul>
+                        </div>
+                        <footer><a href="#" role="button" class="contrast" data-modalidade-btn="Híbrido">Ver Planos</a></footer>
+                    </article>
+                </div>
             </fieldset>
 
-            <fieldset>
-                <legend>Seus Dados</legend>
-                <label for="nome">Nome Completo</label>
-                <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+            <!-- Seção de Seletores Dinâmicos -->
+            <div id="seletores-dinamicos" class="hidden">
+                <div class="grid">
+                    <!-- Passo 2: Duração do Contrato -->
+                    <fieldset id="passo-periodicidade">
+                        <legend>Passo 2: Duração do Compromisso</legend>
+                        <select id="seletor-periodicidade" required>
+                            <option value="" disabled selected>Selecione a duração...</option>
+                            <option value="Mensal">Mensal (Flexibilidade )</option>
+                            <option value="Trimestral">Trimestral (Economia)</option>
+                            <option value="Semestral">Semestral (Mais Vantagem)</option>
+                            <option value="Anual">Anual (Melhor Custo-Benefício)</option>
+                        </select>
+                    </fieldset>
 
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email" placeholder="seu.melhor@email.com" required>
+                    <!-- Passo 3: Frequência Semanal -->
+                    <fieldset id="passo-frequencia" class="hidden">
+                        <legend>Passo 3: Frequência Semanal</legend>
+                        <select id="seletor-frequencia" required>
+                            <option value="" disabled selected>Selecione a frequência...</option>
+                            <option value="3">3 vezes/semana</option>
+                            <option value="4">4 vezes/semana</option>
+                            <option value="5">5 vezes/semana</option>
+                            <option value="6">6 vezes/semana</option>
+                        </select>
+                    </fieldset>
+                </div>
+            </div>
 
-                <label for="telefone">Telefone (WhatsApp)</label>
-                <input type="tel" id="telefone" name="telefone" placeholder="(XX) XXXXX-XXXX" required>
+            <!-- Resultado Final e Dados do Cliente -->
+            <div id="resultado-plano" class="hidden">
+                <hgroup>
+                    <h3>Seu Plano Personalizado</h3>
+                    <p id="resumo-plano">Seu plano aparecerá aqui.</p>
+                    <h2 id="preco-final">R$ 0,00</h2>
+                </hgroup>
+            </div>
+
+            <fieldset id="passo-dados-cliente" class="hidden">
+                <legend>Último Passo: Seus Dados</legend>
+                <div class="grid">
+                    <input type="text" id="nome" name="nome" placeholder="Nome Completo" required>
+                    <input type="email" id="email" name="email" placeholder="Seu melhor e-mail" required>
+                    <input type="tel" id="telefone" name="telefone" placeholder="Telefone (WhatsApp)" required>
+                </div>
             </fieldset>
 
-            <button type="submit" id="submit-button">Quero Começar!</button>
+            <button type="submit" id="submit-button" class="hidden">Confirmar Inscrição</button>
         </form>
 
         <!-- Mensagem de feedback para o usuário -->
         <p id="feedback-message" class="text-center"></p>
-
     </main>
 
     <!-- Nosso arquivo de script -->
