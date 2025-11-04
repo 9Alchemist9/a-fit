@@ -1,123 +1,109 @@
-import sqlite3
-import smtplib
-from email.mime.text import MIMEText
-from flask import Flask, request, jsonify
-from datetime import datetime
-from flask import Flask, request, jsonify, render_template # Adicione render_template aqui
 import os
+import smtplib
+from email.message import EmailMessage
+from datetime import datetime
+from flask import Flask, request, jsonify, render_template
+from flask_sqlalchemy import SQLAlchemy
 
 # --- CONFIGURAÇÃO ---
-# Altere estas variáveis com seus dados
+# As variáveis de ambiente serão lidas do ambiente do Render
 MEU_EMAIL = os.environ.get("MEU_EMAIL")
-SENHA_DE_APP = os.environ.get("SENHA_DE_APP")
-NOME_DO_REMETENTE = "Notificação A-FIT"
+SENHA_APP = os.environ.get("SENHA_APP") # Corrigido para corresponder ao Render
 
-# --- INICIALIZAÇÃO DO APP FLASK ---
+# --- INICIALIZAÇÃO DO APP E BANCO DE DADOS ---
 app = Flask(__name__)
 
-# --- FUNÇÃO PARA INICIAR O BANCO DE DADOS ---
-def init_db():
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    # Cria a tabela se ela não existir
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS clientes (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            email TEXT NOT NULL,
-            telefone TEXT NOT NULL,
-            servico_escolhido TEXT NOT NULL,
-            valor_mensal REAL NOT NULL,
-            data_hora TEXT NOT NULL
-        )
-    ''')
-    conn.commit()
-    conn.close()
+# Configuração do banco de dados SQLAlchemy
+# O Render cria o arquivo no local correto
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-# --- FUNÇÃO PARA ENVIAR E-MAIL DE NOTIFICAÇÃO ---
-def enviar_notificacao(dados_cliente):
-    try:
-        # Corpo do e-mail
-        corpo_email = f"""
-        <h1>Novo Cliente Registrado!</h1>
-        <p>Um novo cliente se registrou para seus serviços de assessoria.</p>
-        <h2>Detalhes do Cliente:</h2>
-        <ul>
-            <li><strong>Nome:</strong> {dados_cliente['nome']}</li>
-            <li><strong>Email:</strong> {dados_cliente['email']}</li>
-            <li><strong>Telefone:</strong> {dados_cliente['telefone']}</li>
-            <li><strong>Serviço:</strong> {dados_cliente['servico']}</li>
-            <li><strong>Valor:</strong> R$ {dados_cliente['valor']:.2f}</li>
-            <li><strong>Data:</strong> {dados_cliente['data']}</li>
-        </ul>
-        <p>Entre em contato o mais rápido possível!</p>
-        """
 
-        msg = MIMEText(corpo_email, 'html')
-        msg['From'] = NOME_DO_REMETENTE
-        msg['To'] = MEU_EMAIL
-        msg['Subject'] = f"Novo Cliente: {dados_cliente['nome']}"
+# --- MODELO DO BANCO DE DADOS (TABELA CLIENTES) ---
+class Cliente(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    telefone = db.Column(db.String(20), nullable=False)
+    servico_escolhido = db.Column(db.String(100), nullable=False)
+    valor_mensal = db.Column(db.Float, nullable=False)
+    data_hora = db.Column(db.DateTime, default=datetime.utcnow)
 
-        # Conexão com o servidor SMTP do Gmail
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(MEU_EMAIL, SENHA_DE_APP)
-        server.sendmail(MEU_EMAIL, MEU_EMAIL, msg.as_string())
-        server.quit()
-        print("Notificação por e-mail enviada com sucesso!")
-    except Exception as e:
-        print(f"Erro ao enviar e-mail: {e}")
+    def __repr__(self):
+        return f'<Cliente {self.nome}>'
 
 
 # --- ENDPOINT PRINCIPAL DA API ---
 @app.route('/submit', methods=['POST'])
-def handle_submission():
-    # 1. Pega os dados enviados pelo formulário (frontend)
+def submit():
     dados = request.get_json()
 
     # Validação simples dos dados recebidos
     if not all(k in dados for k in ['nome', 'email', 'telefone', 'servico', 'valor']):
-        return jsonify({"status": "erro", "mensagem": "Dados incompletos"}), 400
+        return jsonify({"mensagem": "Dados incompletos"}), 400
 
-    # 2. Prepara os dados para o banco
-    nome = dados['nome']
-    email = dados['email']
-    telefone = dados['telefone']
-    servico = dados['servico']
-    valor = float(dados['valor'])
-    data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    # 3. Salva no banco de dados
     try:
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO clientes (nome, email, telefone, servico_escolhido, valor_mensal, data_hora) VALUES (?, ?, ?, ?, ?, ?)",
-            (nome, email, telefone, servico, valor, data_hora)
+        # 1. Salva no banco de dados usando SQLAlchemy
+        novo_cliente = Cliente(
+            nome=dados['nome'],
+            email=dados['email'],
+            telefone=dados['telefone'],
+            servico_escolhido=dados['servico'],
+            valor_mensal=float(dados['valor'])
         )
-        conn.commit()
-        conn.close()
-    except Exception as e:
-        print(f"Erro ao salvar no banco de dados: {e}")
-        return jsonify({"status": "erro", "mensagem": "Erro interno no servidor"}), 500
+        db.session.add(novo_cliente)
+        db.session.commit()
+        print(f"Cliente '{dados['nome']}' salvo no banco de dados com sucesso.")
 
-    # 4. Envia a notificação por e-mail
-    dados_email = {
-        'nome': nome, 'email': email, 'telefone': telefone, 
-        'servico': servico, 'valor': valor, 'data': data_hora
-    }
-    enviar_notificacao(dados_email)
+    except Exception as db_error:
+        db.session.rollback()
+        print(f"!!!!!!!!!! ERRO DE BANCO DE DADOS: {db_error} !!!!!!!!!!")
+        return jsonify({"mensagem": "Erro ao salvar os dados."}), 500
 
-    # 5. Retorna uma resposta de sucesso para o frontend
-    return jsonify({"status": "sucesso", "mensagem": "Dados recebidos e processados!"})
+    # 2. Tenta enviar a notificação por e-mail
+    try:
+        print("Tentando enviar e-mail de notificação...")
+        msg = EmailMessage()
+        msg['Subject'] = f"Nova Inscrição A-FIT: {dados['nome']}"
+        msg['From'] = MEU_EMAIL
+        msg['To'] = MEU_EMAIL
+        msg.set_content(f"""
+        Nova inscrição recebida:
+
+        Nome: {dados['nome']}
+        E-mail: {dados['email']}
+        Telefone: {dados['telefone']}
+        Serviço: {dados['servico']}
+        Valor: R$ {float(dados['valor']):.2f}
+        Data: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}
+        """)
+
+        # Usando SMTP_SSL para uma conexão mais segura
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(MEU_EMAIL, SENHA_APP)
+            server.send_message(msg)
+        
+        print("E-mail enviado com sucesso!")
+        return jsonify({"mensagem": "Inscrição realizada com sucesso!"}), 200
+
+    except Exception as email_error:
+        # Se o e-mail falhar, o erro será impresso nos logs do Render.
+        # A aplicação não quebra e o usuário ainda vê uma mensagem de sucesso.
+        print(f"!!!!!!!!!! ERRO AO ENVIAR E-MAIL: {email_error} !!!!!!!!!!")
+        return jsonify({"mensagem": "Sua inscrição foi registrada, mas a notificação por e-mail falhou. Entraremos em contato mesmo assim."}), 200
+
 
 # --- ROTA PARA SERVIR A PÁGINA PRINCIPAL ---
 @app.route('/')
 def index():
-    # Renderiza o template a partir da pasta 'templates'
     return render_template('index.html')
 
-# --- EXECUÇÃO DO APP ---
-if __name__ == '__main__':
-    init_db()  # Garante que o banco de dados e a tabela existam ao iniciar
-    app.run(debug=True, port=5001) # Executa o servidor em modo de depuração
+
+# --- COMANDO PARA INICIAR O BANCO DE DADOS (para ser usado no build.sh) ---
+# Não é mais necessário chamar init_db() aqui
+# if __name__ == '__main__':
+#     with app.app_context():
+#         db.create_all()
+#     app.run(debug=True, port=5001)
+
