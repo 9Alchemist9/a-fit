@@ -104,7 +104,7 @@
                     <!-- Passo 3: Frequência Semanal -->
                     <fieldset id="passo-frequencia" class="hidden">
                         <legend>Frequência Semanal</legend>
-                        <select id="seletor-frequencia" required>
+                        <select id="seletor-frequencia">
                             <option value="" disabled selected>Selecione a frequência...</option>
                             <option value="3">3 vezes/semana</option>
                             <option value="4">4 vezes/semana</option>
@@ -139,6 +139,10 @@
         <!-- Mensagem de feedback para o usuário -->
         <p id="feedback-message" class="text-center"></p>
     </main>
+
+    <!-- Biblioteca para máscara de input -->
+    <script src="https://unpkg.com/imask"></script>
+    <script src="/static/script.js"></script>
 
     <!-- Nosso arquivo de script -->
     <script src="/static/script.js"></script>

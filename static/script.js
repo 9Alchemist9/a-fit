@@ -178,6 +178,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Aplica a máscara de telefone
+    const telefoneInput = document.getElementById('telefone');
+    const mascaraTelefone = {
+        mask: [
+            {
+                mask: '+{55} (00) 0000-0000',
+                lazy: false
+            },
+            {
+                mask: '+{55} (00) 0 0000-0000',
+                lazy: false
+            }
+        ]
+    };
+    const mascara = IMask(telefoneInput, mascaraTelefone);
+
     // Inicia a UI
     atualizarUI();
 });
