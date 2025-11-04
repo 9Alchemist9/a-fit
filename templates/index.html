@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
-<body>
+<body data-theme="light">
     <main class="container">
         <header class="header-personalizado">
             <img src="/static/perfil2.png" alt="Logo Diego Alckmin" class="logo">
@@ -22,51 +22,66 @@
         <form id="assessoria-form">
             <!-- Passo 1: Escolha da Modalidade -->
             <fieldset>
-                <legend>Passo 1: Escolha a Modalidade</legend>
+                <legend>Escolha a Modalidade</legend>
                 <div class="grid-horizontal">
                     <!-- Card Assessoria Online -->
                     <article class="card-modalidade" data-modalidade="Online">
                         <div class="card-content">
                             <h4>Assessoria Online</h4>
-                            <p>Ideal para quem busca máxima eficiência e flexibilidade, sem a necessidade de encontros presenciais.</p>
+                            <p>Ideal para quem busca máxima eficiência e flexibilidade, sem a necessidade de encontros
+                                presenciais.</p>
                             <ul>
-                                <li><strong>Prescrição de treino</strong> via aplicativo com vídeos e instruções detalhadas.</li>
+                                <li><strong>Prescrição de treino</strong> via aplicativo com vídeos e instruções
+                                    detalhadas.</li>
                                 <li><strong>Acompanhamento diário</strong> de progresso e ajustes estratégicos.</li>
-                                <li><strong>Canal direto no WhatsApp</strong> para dúvidas, correções e suporte contínuo.</li>
-                                <li><strong>Adaptações para viagens</strong> e mudanças de rotina, mantendo seu progresso.</li>
+                                <li><strong>Canal direto no WhatsApp</strong> para dúvidas, correções e suporte
+                                    contínuo.</li>
+                                <li><strong>Adaptações para viagens</strong> e mudanças de rotina, mantendo seu
+                                    progresso.</li>
                             </ul>
                         </div>
-                        <footer><a href="#" role="button" class="contrast" data-modalidade-btn="Online">Ver Planos</a></footer>
+                        <footer><a href="#" role="button" class="contrast" data-modalidade-btn="Online">Ver Planos</a>
+                        </footer>
                     </article>
 
                     <!-- Card Sessões Presenciais -->
                     <article class="card-modalidade" data-modalidade="Presencial">
                         <div class="card-content">
                             <h4>Sessões Presenciais</h4>
-                            <p>Ideal para quem valoriza a experiência prática, o ajuste técnico imediato e o acompanhamento próximo.</p>
+                            <p>Ideal para quem valoriza a experiência prática, o ajuste técnico imediato e o
+                                acompanhamento próximo.</p>
                             <ul>
-                                <li><strong>Sessões de até 90 minutos</strong> planejadas para máxima eficiência e segurança.</li>
+                                <li><strong>Sessões de até 90 minutos</strong> planejadas para máxima eficiência e
+                                    segurança.</li>
                                 <li><strong>Correção minuciosa</strong> da execução, postura e padrão de movimento.</li>
-                                <li><strong>Controle de cargas</strong> e progressão com método estruturado para evolução.</li>
-                                <li><strong>Ambiente controlado</strong> e atenção total aos detalhes do seu treino.</li>
+                                <li><strong>Controle de cargas</strong> e progressão com método estruturado para
+                                    evolução.</li>
+                                <li><strong>Ambiente controlado</strong> e atenção total aos detalhes do seu treino.
+                                </li>
                             </ul>
                         </div>
-                        <footer><a href="#" role="button" class="contrast" data-modalidade-btn="Presencial">Ver Planos</a></footer>
+                        <footer><a href="#" role="button" class="contrast" data-modalidade-btn="Presencial">Ver
+                                Planos</a></footer>
                     </article>
 
                     <!-- Card Modelo Híbrido -->
                     <article class="card-modalidade" data-modalidade="Híbrido">
                         <div class="card-content">
                             <h4>Plano Híbrido</h4>
-                            <p>A solução completa que une o suporte diário online com a intensidade das aulas presenciais para resultados acelerados.</p>
+                            <p>A solução completa que une o suporte diário online com a vantagem das aulas presenciais
+                                para resultados acelerados.</p>
                             <ul>
-                                <li><strong>Treinos presenciais</strong> para execução técnica precisa e progresso acelerado.</li>
+                                <li><strong>Treinos presenciais</strong> para execução técnica precisa e progresso
+                                    acelerado.</li>
                                 <li><strong>Acesso total ao App</strong> com treinos, vídeos e métricas detalhadas.</li>
-                                <li><strong>Acompanhamento contínuo</strong> via WhatsApp para suporte fora das aulas.</li>
-                                <li><strong>Relatórios claros</strong> de desempenho para uma evolução consistente e monitorada.</li>
+                                <li><strong>Acompanhamento contínuo</strong> via WhatsApp para suporte fora das aulas.
+                                </li>
+                                <li><strong>Relatórios claros</strong> de desempenho para uma evolução consistente e
+                                    monitorada.</li>
                             </ul>
                         </div>
-                        <footer><a href="#" role="button" class="contrast" data-modalidade-btn="Híbrido">Ver Planos</a></footer>
+                        <footer><a href="#" role="button" class="contrast" data-modalidade-btn="Híbrido">Ver Planos</a>
+                        </footer>
                     </article>
                 </div>
             </fieldset>
@@ -76,19 +91,19 @@
                 <div class="grid">
                     <!-- Passo 2: Duração do Contrato -->
                     <fieldset id="passo-periodicidade">
-                        <legend>Passo 2: Duração do Compromisso</legend>
+                        <legend>Duração do Programa</legend>
                         <select id="seletor-periodicidade" required>
                             <option value="" disabled selected>Selecione a duração...</option>
-                            <option value="Mensal">Mensal (Flexibilidade )</option>
-                            <option value="Trimestral">Trimestral (Economia)</option>
-                            <option value="Semestral">Semestral (Mais Vantagem)</option>
-                            <option value="Anual">Anual (Melhor Custo-Benefício)</option>
+                            <option value="Mensal">Mensal</option>
+                            <option value="Trimestral">Trimestral</option>
+                            <option value="Semestral">Semestral</option>
+                            <option value="Anual">Anual</option>
                         </select>
                     </fieldset>
 
                     <!-- Passo 3: Frequência Semanal -->
                     <fieldset id="passo-frequencia" class="hidden">
-                        <legend>Passo 3: Frequência Semanal</legend>
+                        <legend>Frequência Semanal</legend>
                         <select id="seletor-frequencia" required>
                             <option value="" disabled selected>Selecione a frequência...</option>
                             <option value="3">3 vezes/semana</option>
@@ -110,7 +125,7 @@
             </div>
 
             <fieldset id="passo-dados-cliente" class="hidden">
-                <legend>Último Passo: Seus Dados</legend>
+                <legend>Seus Dados</legend>
                 <div class="grid">
                     <input type="text" id="nome" name="nome" placeholder="Nome Completo" required>
                     <input type="email" id="email" name="email" placeholder="Seu melhor e-mail" required>
