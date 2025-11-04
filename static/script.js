@@ -33,13 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const passoDadosCliente = document.getElementById('passo-dados-cliente');
     const resultadoPlano = document.getElementById('resultado-plano');
     const submitButton = document.getElementById('submit-button');
-    
+
     const seletorPeriodicidade = document.getElementById('seletor-periodicidade');
     const seletorFrequencia = document.getElementById('seletor-frequencia');
 
     const resumoPlanoEl = document.getElementById('resumo-plano');
     const precoFinalEl = document.getElementById('preco-final');
-    
+
     const form = document.getElementById('assessoria-form');
     const feedbackMessage = document.getElementById('feedback-message');
 
@@ -58,14 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selecao.periodicidade) {
             if (selecao.modalidade === 'Presencial' || selecao.modalidade === 'Híbrido') {
                 passoFrequencia.classList.remove('hidden');
-            } else {
+                seletorFrequencia.required = true; // TORNA OBRIGATÓRIO
+            } else { // Caso Online
+                passoFrequencia.classList.add('hidden'); // Garante que está escondido
+                seletorFrequencia.required = false;    // DEIXA DE SER OBRIGATÓRIO
                 calcularPrecoFinal();
             }
         }
+
         if (selecao.frequencia && (selecao.modalidade === 'Presencial' || selecao.modalidade === 'Híbrido')) {
             calcularPrecoFinal();
         }
-        
+
         if (selecao.valorFinal > 0) {
             resultadoPlano.classList.remove('hidden');
             passoDadosCliente.classList.remove('hidden');
@@ -84,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             valor = precos[modalidade][periodicidade][frequencia];
             plano += ` (${frequencia}x/semana)`;
         }
-        
+
         selecao.valorFinal = valor;
         selecao.planoFinal = plano;
 
@@ -100,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         botao.addEventListener('click', (e) => {
             e.preventDefault();
             const modalidadeSelecionada = botao.dataset.modalidadeBtn;
-            
+
             cardsModalidade.forEach(c => c.classList.remove('selected'));
             const cardPai = botao.closest('.card-modalidade');
             cardPai.classList.add('selected');
@@ -111,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
             selecao.valorFinal = 0;
             seletorPeriodicidade.value = "";
             seletorFrequencia.value = "";
-            
+
             atualizarUI();
 
             seletoresDinamicos.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -153,10 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const result = await response.json();
             if (!response.ok) throw new Error(result.mensagem || 'Ocorreu um erro.');
-            
+
             feedbackMessage.innerHTML = 'Inscrição realizada com sucesso! Entraremos em contato em breve.';
             feedbackMessage.className = 'success';
-            
+
             // Limpa o formulário e reseta a UI
             document.getElementById('nome').value = '';
             document.getElementById('email').value = '';
