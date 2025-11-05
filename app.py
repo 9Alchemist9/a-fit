@@ -7,21 +7,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-# --- CONFIGURAÇÃO ---
-MEU_EMAIL = os.environ.get("MEU_EMAIL")
-SENHA_APP = os.environ.get("SENHA_APP")
+# --- CONFIGURAÇÃO DO BANCO DE DADOS ---
+# O Vercel gerencia o local do arquivo automaticamente
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-
-# ...
-db = SQLAlchemy(app)
-
-# Adicione estas duas linhas:
-with app.app_context():
-    db.create_all()
-# ...
-
 
 # --- MODELO DO BANCO DE DADOS ---
 class Cliente(db.Model):
@@ -33,9 +23,23 @@ class Cliente(db.Model):
     valor_mensal = db.Column(db.Float, nullable=False)
     data_hora = db.Column(db.DateTime, default=datetime.utcnow)
 
+# Cria as tabelas do banco de dados se não existirem
+with app.app_context():
+    db.create_all()
+
 # --- ENDPOINT SUBMIT ---
 @app.route('/submit', methods=['POST'])
 def submit():
+    # LÊ AS VARIÁVEIS DE AMBIENTE AQUI, DENTRO DA FUNÇÃO
+    # Este é o ponto crucial da correção
+    meu_email_remetente = os.environ.get("MEU_EMAIL")
+    senha_app_remetente = os.environ.get("SENHA_APP")
+
+    # Verifica se as variáveis foram carregadas
+    if not meu_email_remetente or not senha_app_remetente:
+        print("!!!!!!!!!! ERRO CRÍTICO: Variáveis de ambiente MEU_EMAIL ou SENHA_APP não encontradas! !!!!!!!!!!")
+        return jsonify({"mensagem": "Erro de configuração do servidor."}), 500
+
     dados = request.get_json()
     try:
         novo_cliente = Cliente(
@@ -54,12 +58,12 @@ def submit():
         print("Tentando enviar e-mail...")
         msg = EmailMessage()
         msg['Subject'] = f"Nova Inscrição A-FIT: {dados['nome']}"
-        msg['From'] = MEU_EMAIL
-        msg['To'] = MEU_EMAIL
+        msg['From'] = meu_email_remetente
+        msg['To'] = meu_email_remetente
         msg.set_content(f"Nova inscrição recebida:\n\nNome: {dados['nome']}\nE-mail: {dados['email']}\nTelefone: {dados['telefone']}\nServiço: {dados['servico']}\nValor: R$ {float(dados['valor']):.2f}")
         
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-            server.login(MEU_EMAIL, SENHA_APP)
+            server.login(meu_email_remetente, senha_app_remetente)
             server.send_message(msg)
         print("E-mail enviado com sucesso!")
         return jsonify({"mensagem": "Inscrição realizada com sucesso!"}), 200
