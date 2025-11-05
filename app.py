@@ -9,7 +9,9 @@ app = Flask(__name__)
 
 # --- CONFIGURAÇÃO DO BANCO DE DADOS ---
 # O Vercel gerencia o local do arquivo automaticamente
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+# Define o caminho para o banco de dados no diretório /tmp, que é gravável no Vercel
+db_path = os.path.join('/tmp', 'database.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
