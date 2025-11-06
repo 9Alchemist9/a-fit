@@ -137,6 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lógica de envio do formulário
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
+
+        // ADIÇÃO 1: Nosso primeiro "espião"
+        console.log('EVENTO DE SUBMIT DETECTADO! Preparando para enviar...');
+
         submitButton.setAttribute('aria-busy', 'true');
         submitButton.disabled = true;
         feedbackMessage.textContent = '';
@@ -150,12 +154,20 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
+
+            // ADIÇÃO 2: Nosso segundo "espião", antes do fetch
+            console.log('Enviando requisição fetch para /submit com os dados:', dataToSend);
+
             const response = await fetch('/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dataToSend)
             });
             const result = await response.json();
+
+            // ADIÇÃO 3: Nosso terceiro "espião", após receber a resposta
+            console.log('Resposta recebida do servidor:', result);
+
             if (!response.ok) throw new Error(result.mensagem || 'Ocorreu um erro.');
 
             feedbackMessage.innerHTML = 'Inscrição realizada com sucesso! Entraremos em contato em breve.';
