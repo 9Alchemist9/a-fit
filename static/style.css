@@ -1,4 +1,4 @@
-/* /static/style.css - CÓDIGO ORGANIZADO */
+/* /static/style.css - VERSÃO COMPLETA E ATUALIZADA */
 
 /* ==========================================================================
    1. ESTILOS GERAIS E LAYOUT PRINCIPAL
@@ -75,11 +75,38 @@ fieldset legend {
     padding: 0;
 }
 
-/* Altera a cor do rótulo 'Selecione a Periodicidade' */
-#passo-periodicidade label {
+/* --- INÍCIO DA NOVA ALTERAÇÃO (ESTILO CONDICIONAL DOS SELETORES) --- */
+
+/* Estilização para os seletores de Periodicidade e Frequência */
+#seletor-periodicidade,
+#seletor-frequencia {
+    /* Estado padrão (com placeholder): cor escura, mas peso normal */
     color: var(--pico-form-element-label-color);
+    font-weight: normal; /* Garante que começa sem negrito */
+    transition: font-weight 0.1s ease-in-out; /* Animação sutil */
+}
+
+/* Estado selecionado: Quando uma opção VÁLIDA é escolhida, fica em negrito */
+#seletor-periodicidade:valid,
+#seletor-frequencia:valid {
     font-weight: bold;
 }
+
+/* Opções na lista: As opções reais (não o placeholder) aparecem em negrito */
+#seletor-periodicidade option:not([value=""]),
+#seletor-frequencia option:not([value=""]) {
+    color: var(--pico-secondary); /* Cor para as opções na lista suspensa */
+    font-weight: bold;
+}
+
+/* Opcional: Estiliza o placeholder para ser um pouco mais claro */
+#seletor-periodicidade option[value=""],
+#seletor-frequencia option[value=""] {
+    color: #999; /* Um cinza mais claro para o texto 'Selecione...' */
+}
+
+/* --- FIM DA NOVA ALTERAÇÃO --- */
+
 
 /* ==========================================================================
    4. CARDS DE SERVIÇO (MODALIDADES)
