@@ -75,18 +75,34 @@ fieldset legend {
     padding: 0;
 }
 
-/* --- INÍCIO DA NOVA ALTERAÇÃO (ESTILO CONDICIONAL DOS SELETORES) --- */
+/* --- Estilo Condicional para Inputs e Selects --- */
+
+/* Estilização para os campos de texto de Nome, E-mail e Telefone */
+#nome,
+#email,
+#telefone {
+    /* Estado padrão (vazio): peso normal */
+    font-weight: normal;
+    transition: font-weight 0.1s ease-in-out;
+}
+
+/* Estado preenchido/válido dos inputs: fica em negrito */
+#nome:valid,
+#email:valid,
+#telefone:valid {
+    font-weight: bold;
+}
 
 /* Estilização para os seletores de Periodicidade e Frequência */
 #seletor-periodicidade,
 #seletor-frequencia {
     /* Estado padrão (com placeholder): cor escura, mas peso normal */
     color: var(--pico-form-element-label-color);
-    font-weight: normal; /* Garante que começa sem negrito */
-    transition: font-weight 0.1s ease-in-out; /* Animação sutil */
+    font-weight: normal;
+    transition: font-weight 0.1s ease-in-out;
 }
 
-/* Estado selecionado: Quando uma opção VÁLIDA é escolhida, fica em negrito */
+/* Estado selecionado dos selects: Quando uma opção VÁLIDA é escolhida, fica em negrito */
 #seletor-periodicidade:valid,
 #seletor-frequencia:valid {
     font-weight: bold;
@@ -104,9 +120,6 @@ fieldset legend {
 #seletor-frequencia option[value=""] {
     color: #999; /* Um cinza mais claro para o texto 'Selecione...' */
 }
-
-/* --- FIM DA NOVA ALTERAÇÃO --- */
-
 
 /* ==========================================================================
    4. CARDS DE SERVIÇO (MODALIDADES)
