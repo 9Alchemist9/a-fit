@@ -121,6 +121,15 @@ fieldset legend {
     color: #999; /* Um cinza mais claro para o texto 'Selecione...' */
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--pico-form-element-label-color) !important;
+    box-shadow: 0 0 0 30px var(--pico-form-element-background-color) inset !important;
+    font-weight: bold;
+}
+
 /* ==========================================================================
    4. CARDS DE SERVIÇO (MODALIDADES)
    ========================================================================== */
