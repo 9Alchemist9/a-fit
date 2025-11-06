@@ -1,15 +1,19 @@
-/* Centraliza o conteúdo principal e limita a largura para melhor leitura */
-body {
+/* /static/style.css - CÓDIGO ORGANIZADO */
+
+/* ==========================================================================
+   1. ESTILOS GERAIS E LAYOUT PRINCIPAL
+   ========================================================================== */
+
+   body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f3f4f6;
+    background-color: #f3f4f6; /* Um cinza claro para o fundo da página */
 }
 
 main.container {
     max-width: 1200px;
-    /* Aumentamos a largura máxima para o layout horizontal */
     width: 100%;
     padding: 2rem;
     background-color: white;
@@ -17,31 +21,21 @@ main.container {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Melhora o espaçamento e a aparência do formulário */
-form fieldset {
-    margin-bottom: 1.5rem;
-    padding-bottom: 0;
+.hidden {
+    display: none;
 }
 
 .text-center {
     text-align: center;
 }
 
-/* Estilo para a mensagem de feedback */
-#feedback-message.success {
-    color: var(--pico-color-green-500);
-    font-weight: bold;
-}
+/* ==========================================================================
+   2. CABEÇALHO E LOGO
+   ========================================================================== */
 
-#feedback-message.error {
-    color: var(--pico-color-red-500);
-    font-weight: bold;
-}
-
-/* Estilos para o novo cabeçalho personalizado */
 .header-personalizado {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
 }
 
 .logo {
@@ -64,12 +58,33 @@ form fieldset {
     color: var(--pico-secondary);
 }
 
-/* Estilos para o novo seletor de planos */
-.hidden {
-    display: none;
+/* ==========================================================================
+   3. FORMULÁRIO E SEUS COMPONENTES
+   ========================================================================== */
+
+form fieldset {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0;
 }
 
-/* NOVO: Layout horizontal para os cards */
+fieldset legend {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    width: 100%;
+    padding: 0;
+}
+
+/* Altera a cor do rótulo 'Selecione a Periodicidade' */
+#passo-periodicidade label {
+    color: var(--pico-form-element-label-color);
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   4. CARDS DE SERVIÇO (MODALIDADES)
+   ========================================================================== */
+
 .grid-horizontal {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -77,12 +92,13 @@ form fieldset {
 }
 
 .card-modalidade {
-    border: 2px solid var(--pico-form-element-border-color);
+    border: 10px solid var(--pico-form-element-border-color);
     cursor: default;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     transition: border-color 0.2s ease-in-out;
+    margin-top: 50px;
 }
 
 .card-modalidade.selected {
@@ -102,18 +118,25 @@ form fieldset {
     font-size: 0.9rem;
     padding-left: 1.2rem;
     margin-top: 1rem;
-    flex-grow: 1;
-    /* Faz a lista ocupar o espaço disponível, alinhando os botões */
+    flex-grow: 1; /* Faz a lista ocupar o espaço disponível */
 }
 
 .card-modalidade footer {
-    padding-bottom: 1rem;
-    margin-top: 1.5rem;
+    padding-bottom: 3rem;
+    margin-top: 3px;
     background-color: transparent;
     border-top: none;
     text-align: center;
 }
 
+.contrast { /* Estilo para o botão 'Ver Planos' */
+    width: 250px;
+    height: 60px;
+}
+
+/* ==========================================================================
+   5. SEÇÃO DE RESULTADO E FEEDBACK
+   ========================================================================== */
 
 #resultado-plano {
     text-align: center;
@@ -129,11 +152,12 @@ form fieldset {
     margin: 0;
 }
 
-fieldset legend {
-    text-align: center;
-    font-size: 1.25rem;
+#feedback-message.success {
+    color: var(--pico-color-green-500);
     font-weight: bold;
-    width: 100%;
-    /*margin-bottom: 1.5rem;*/
-    padding: 0;
+}
+
+#feedback-message.error {
+    color: var(--pico-color-red-500);
+    font-weight: bold;
 }
