@@ -128,20 +128,20 @@ document.addEventListener('DOMContentLoaded', () => {
         atualizarUI();
     });
 
-    // INICIALIZA A BIBLIOTECA DE TELEFONE INTERNACIONAL (VERSÃO FINAL E CORRETA)
+    // INICIALIZA A BIBLIOTECA DE TELEFONE INTERNACIONAL
     const iti = window.intlTelInput(telefoneInput, {
         initialCountry: "auto",
-        geoIpLookup: function(callback) {
-            fetch("https://ipapi.co/json" )
+        geoIpLookup: function (callback) {
+            fetch("https://ipinfo.io/json") // <<< LINHA CORRIGIDA
                 .then(res => res.json())
-                .then(data => callback(data.country_code))
+                .then(data => callback(data.country)) // <<< CORREÇÃO SUTIL: ipinfo retorna 'country', não 'country_code'
                 .catch(() => callback("br"));
         },
-        // As 3 chaves para o sucesso da formatação e layout:
         separateDialCode: true,
         placeholderNumberType: "MOBILE",
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
-    } );
+    });
+
 
     // Lógica de envio do formulário
     form.addEventListener('submit', async (event) => {
