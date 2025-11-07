@@ -8,8 +8,10 @@
     <style>
         body { padding: 2rem; }
         table { width: 100%; }
-        th, td { white-space: nowrap; }
-        td { font-size: 0.9em; vertical-align: middle; } /* Garante alinhamento vertical */
+        th, td { white-space: nowrap; vertical-align: middle; }
+        td { font-size: 0.9em; }
+        /* Ajusta o tamanho dos inputs dentro da tabela */
+        td input, td select { margin-bottom: 0; height: auto; padding: 0.25rem; }
     </style>
 </head>
 <body data-theme="light">
@@ -24,7 +26,7 @@
         </div>
 
         <figure>
-            <div style="overflow-x: auto;"> <!-- Adicionado para rolagem horizontal em telas pequenas -->
+            <div style="overflow-x: auto;">
                 <table>
                     <thead>
                         <tr>
@@ -32,38 +34,55 @@
                             <th>Nome</th>
                             <th>E-mail</th>
                             <th>Telefone</th>
-                            <th>Serviço Escolhido</th>
-                            <th>Valor Mensal</th>
-                            
-                            <!-- <<< INÍCIO DA ADIÇÃO DAS NOVAS COLUNAS NO CABEÇALHO >>> -->
+                            <th>Serviço</th>
+                            <th>Valor</th>
                             <th>Forma de Pagamento</th>
                             <th>Data Início</th>
                             <th>Data Fim</th>
-                            <th>Parcelas Pagas</th>
-                            <!-- <<< FIM DA ADIÇÃO DAS NOVAS COLUNAS NO CABEÇALHO >>> -->
+                            <th>Ação</th> <!-- Nova coluna para o botão Salvar -->
                         </tr>
                     </thead>
                     <tbody>
                         {% for cliente in clientes %}
-                        <tr>
-                            <td>{{ cliente.data_hora.strftime('%d/%m/%Y %H:%M' ) }}</td>
-                            <td>{{ cliente.nome }}</td>
-                            <td>{{ cliente.email }}</td>
-                            <td>{{ cliente.telefone }}</td>
-                            <td>{{ cliente.servico_escolhido }}</td>
-                            <td>R$ {{ "%.2f"|format(cliente.valor_mensal) }}</td>
+                        <!-- CADA LINHA AGORA É UM FORMULÁRIO INDIVIDUAL -->
+                        <form action="{{ url_for('update_cliente', cliente_id=cliente.id ) }}" method="POST">
+                            <tr>
+                                <td>{{ cliente.data_hora.strftime('%d/%m/%Y %H:%M') }}</td>
+                                <td>{{ cliente.nome }}</td>
+                                <td>{{ cliente.email }}</td>
+                                <td>{{ cliente.telefone }}</td>
+                                <td>{{ cliente.servico_escolhido }}</td>
+                                <td>R$ {{ "%.2f"|format(cliente.valor_mensal) }}</td>
+                                
+                                <!-- CAMPO EDITÁVEL: Forma de Pagamento -->
+                                <td>
+                                    <select name="forma_pagamento">
+                                        <option value="Não definido" {% if cliente.forma_pagamento == 'Não definido' %}selected{% endif %}>Não definido</option>
+                                        <option value="À vista" {% if cliente.forma_pagamento == 'À vista' %}selected{% endif %}>À vista</option>
+                                        <option value="À vista - Cartão" {% if cliente.forma_pagamento == 'À vista - Cartão' %}selected{% endif %}>À vista - Cartão</option>
+                                        <option value="Mensal" {% if cliente.forma_pagamento == 'Mensal' %}selected{% endif %}>Mensal</option>
+                                        <option value="Mensal - Cartão" {% if cliente.forma_pagamento == 'Mensal - Cartão' %}selected{% endif %}>Mensal - Cartão</option>
+                                    </select>
+                                </td>
 
-                            <!-- <<< INÍCIO DA ADIÇÃO DAS NOVAS CÉLULAS DE DADOS >>> -->
-                            <!-- Usamos 'cliente.forma_pagamento or ""' para não dar erro se o campo for nulo -->
-                            <td>{{ cliente.forma_pagamento or 'N/D' }}</td>
-                            <td>{{ cliente.data_inicio.strftime('%d/%m/%Y') if cliente.data_inicio else 'N/D' }}</td>
-                            <td>{{ cliente.data_fim.strftime('%d/%m/%Y') if cliente.data_fim else 'N/D' }}</td>
-                            <td>{{ cliente.parcelas_pagas }}</td>
-                            <!-- <<< FIM DA ADIÇÃO DAS NOVAS CÉLULAS DE DADOS >>> -->
-                        </tr>
+                                <!-- CAMPO EDITÁVEL: Data Início -->
+                                <td>
+                                    <input type="date" name="data_inicio" value="{{ cliente.data_inicio.strftime('%Y-%m-%d') if cliente.data_inicio }}">
+                                </td>
+
+                                <!-- CAMPO EDITÁVEL: Data Fim -->
+                                <td>
+                                    <input type="date" name="data_fim" value="{{ cliente.data_fim.strftime('%Y-%m-%d') if cliente.data_fim }}">
+                                </td>
+
+                                <!-- BOTÃO DE AÇÃO -->
+                                <td>
+                                    <button type="submit" class="outline">Salvar</button>
+                                </td>
+                            </tr>
+                        </form>
                         {% else %}
                         <tr>
-                            <!-- Aumentamos o colspan para 10 para cobrir todas as colunas -->
                             <td colspan="10" style="text-align: center;">Nenhum cliente inscrito ainda.</td>
                         </tr>
                         {% endfor %}
