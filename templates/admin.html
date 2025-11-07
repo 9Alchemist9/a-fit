@@ -10,8 +10,10 @@
         table { width: 100%; }
         th, td { white-space: nowrap; vertical-align: middle; }
         td { font-size: 0.9em; }
-        /* Ajusta o tamanho dos inputs dentro da tabela */
         td input, td select { margin-bottom: 0; height: auto; padding: 0.25rem; }
+        /* Estilo para o contêiner dos checkboxes */
+        .parcelas-container { display: flex; gap: 10px; align-items: center; }
+        .parcelas-container label { margin-bottom: 0; }
     </style>
 </head>
 <body data-theme="light">
@@ -32,29 +34,21 @@
                         <tr>
                             <th>Data Inscrição</th>
                             <th>Nome</th>
-                            <th>E-mail</th>
-                            <th>Telefone</th>
                             <th>Serviço</th>
-                            <th>Valor</th>
                             <th>Forma de Pagamento</th>
                             <th>Data Início</th>
                             <th>Data Fim</th>
-                            <th>Ação</th> <!-- Nova coluna para o botão Salvar -->
+                            <th>Parcelas</th> <!-- Nova coluna -->
+                            <th>Ação</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for cliente in clientes %}
-                        <!-- CADA LINHA AGORA É UM FORMULÁRIO INDIVIDUAL -->
                         <form action="{{ url_for('update_cliente', cliente_id=cliente.id ) }}" method="POST">
                             <tr>
                                 <td>{{ cliente.data_hora.strftime('%d/%m/%Y %H:%M') }}</td>
                                 <td>{{ cliente.nome }}</td>
-                                <td>{{ cliente.email }}</td>
-                                <td>{{ cliente.telefone }}</td>
                                 <td>{{ cliente.servico_escolhido }}</td>
-                                <td>R$ {{ "%.2f"|format(cliente.valor_mensal) }}</td>
-                                
-                                <!-- CAMPO EDITÁVEL: Forma de Pagamento -->
                                 <td>
                                     <select name="forma_pagamento">
                                         <option value="Não definido" {% if cliente.forma_pagamento == 'Não definido' %}selected{% endif %}>Não definido</option>
@@ -64,26 +58,35 @@
                                         <option value="Mensal - Cartão" {% if cliente.forma_pagamento == 'Mensal - Cartão' %}selected{% endif %}>Mensal - Cartão</option>
                                     </select>
                                 </td>
-
-                                <!-- CAMPO EDITÁVEL: Data Início -->
+                                <td><input type="date" name="data_inicio" value="{{ cliente.data_inicio.strftime('%Y-%m-%d') if cliente.data_inicio }}"></td>
+                                <td><input type="date" name="data_fim" value="{{ cliente.data_fim.strftime('%Y-%m-%d') if cliente.data_fim }}"></td>
+                                
+                                <!-- <<< INÍCIO DA LÓGICA DOS CHECKBOXES >>> -->
                                 <td>
-                                    <input type="date" name="data_inicio" value="{{ cliente.data_inicio.strftime('%Y-%m-%d') if cliente.data_inicio }}">
-                                </td>
+                                    <div class="parcelas-container">
+                                        {% set total_parcelas = 0 %}
+                                        {% if 'Anual' in cliente.servico_escolhido %}{% set total_parcelas = 12 %}
+                                        {% elif 'Semestral' in cliente.servico_escolhido %}{% set total_parcelas = 6 %}
+                                        {% elif 'Trimestral' in cliente.servico_escolhido %}{% set total_parcelas = 3 %}
+                                        {% elif 'Mensal' in cliente.servico_escolhido %}{% set total_parcelas = 1 %}
+                                        {% endif %}
 
-                                <!-- CAMPO EDITÁVEL: Data Fim -->
-                                <td>
-                                    <input type="date" name="data_fim" value="{{ cliente.data_fim.strftime('%Y-%m-%d') if cliente.data_fim }}">
+                                        {% for i in range(1, total_parcelas + 1) %}
+                                            <label>
+                                                <input type="checkbox" name="parcela_paga" value="{{ i }}" {% if i <= cliente.parcelas_pagas %}checked{% endif %}>
+                                                {{ i }}
+                                            </label>
+                                        {% endfor %}
+                                    </div>
                                 </td>
+                                <!-- <<< FIM DA LÓGICA DOS CHECKBOXES >>> -->
 
-                                <!-- BOTÃO DE AÇÃO -->
-                                <td>
-                                    <button type="submit" class="outline">Salvar</button>
-                                </td>
+                                <td><button type="submit" class="outline">Salvar</button></td>
                             </tr>
                         </form>
                         {% else %}
                         <tr>
-                            <td colspan="10" style="text-align: center;">Nenhum cliente inscrito ainda.</td>
+                            <td colspan="8" style="text-align: center;">Nenhum cliente inscrito ainda.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
