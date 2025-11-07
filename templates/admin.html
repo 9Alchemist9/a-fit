@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Administração - A-FIT</title>
+    <!-- Usando o mesmo Pico.css para manter a consistência visual -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        /* Pequenos ajustes para melhor visualização da tabela */
+        body { padding: 2rem; }
+        table { width: 100%; }
+        th, td { white-space: nowrap; } /* Evita que o texto quebre em várias linhas */
+        td { font-size: 0.9em; }
+    </style>
+</head>
+<body data-theme="light">
+    <main class="container">
+        <hgroup>
+            <h1>Painel de Administração</h1>
+            <h2>Clientes Inscritos</h2>
+        </hgroup>
+
+        <!-- A tabela que irá mostrar os dados -->
+        <figure>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Telefone</th>
+                        <th>Serviço Escolhido</th>
+                        <th>Valor Mensal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- O loop Jinja2 que preenche a tabela -->
+                    {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.data_hora.strftime('%d/%m/%Y %H:%M' ) }}</td>
+                        <td>{{ cliente.nome }}</td>
+                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.telefone }}</td>
+                        <td>{{ cliente.servico_escolhido }}</td>
+                        <td>R$ {{ "%.2f"|format(cliente.valor_mensal) }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Nenhum cliente inscrito ainda.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </figure>
+    </main>
+</body>
+</html>
