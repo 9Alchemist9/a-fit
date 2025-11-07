@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Administração - A-FIT</title>
-    <!-- Usando o mesmo Pico.css para manter a consistência visual -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <style>
-        /* Pequenos ajustes para melhor visualização da tabela */
         body { padding: 2rem; }
         table { width: 100%; }
-        th, td { white-space: nowrap; } /* Evita que o texto quebre em várias linhas */
-        td { font-size: 0.9em; }
+        th, td { white-space: nowrap; }
+        td { font-size: 0.9em; vertical-align: middle; } /* Garante alinhamento vertical */
     </style>
 </head>
 <body data-theme="light">
@@ -21,37 +19,57 @@
             <h2>Clientes Inscritos</h2>
         </hgroup>
 
-        <!-- A tabela que irá mostrar os dados -->
+        <div style="margin-bottom: 2rem; text-align: right;">
+            <a href="/logout" role="button" class="secondary">Sair</a>
+        </div>
+
         <figure>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>Telefone</th>
-                        <th>Serviço Escolhido</th>
-                        <th>Valor Mensal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- O loop Jinja2 que preenche a tabela -->
-                    {% for cliente in clientes %}
-                    <tr>
-                        <td>{{ cliente.data_hora.strftime('%d/%m/%Y %H:%M' ) }}</td>
-                        <td>{{ cliente.nome }}</td>
-                        <td>{{ cliente.email }}</td>
-                        <td>{{ cliente.telefone }}</td>
-                        <td>{{ cliente.servico_escolhido }}</td>
-                        <td>R$ {{ "%.2f"|format(cliente.valor_mensal) }}</td>
-                    </tr>
-                    {% else %}
-                    <tr>
-                        <td colspan="6" style="text-align: center;">Nenhum cliente inscrito ainda.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div style="overflow-x: auto;"> <!-- Adicionado para rolagem horizontal em telas pequenas -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data Inscrição</th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Serviço Escolhido</th>
+                            <th>Valor Mensal</th>
+                            
+                            <!-- <<< INÍCIO DA ADIÇÃO DAS NOVAS COLUNAS NO CABEÇALHO >>> -->
+                            <th>Forma de Pagamento</th>
+                            <th>Data Início</th>
+                            <th>Data Fim</th>
+                            <th>Parcelas Pagas</th>
+                            <!-- <<< FIM DA ADIÇÃO DAS NOVAS COLUNAS NO CABEÇALHO >>> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cliente in clientes %}
+                        <tr>
+                            <td>{{ cliente.data_hora.strftime('%d/%m/%Y %H:%M' ) }}</td>
+                            <td>{{ cliente.nome }}</td>
+                            <td>{{ cliente.email }}</td>
+                            <td>{{ cliente.telefone }}</td>
+                            <td>{{ cliente.servico_escolhido }}</td>
+                            <td>R$ {{ "%.2f"|format(cliente.valor_mensal) }}</td>
+
+                            <!-- <<< INÍCIO DA ADIÇÃO DAS NOVAS CÉLULAS DE DADOS >>> -->
+                            <!-- Usamos 'cliente.forma_pagamento or ""' para não dar erro se o campo for nulo -->
+                            <td>{{ cliente.forma_pagamento or 'N/D' }}</td>
+                            <td>{{ cliente.data_inicio.strftime('%d/%m/%Y') if cliente.data_inicio else 'N/D' }}</td>
+                            <td>{{ cliente.data_fim.strftime('%d/%m/%Y') if cliente.data_fim else 'N/D' }}</td>
+                            <td>{{ cliente.parcelas_pagas }}</td>
+                            <!-- <<< FIM DA ADIÇÃO DAS NOVAS CÉLULAS DE DADOS >>> -->
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <!-- Aumentamos o colspan para 10 para cobrir todas as colunas -->
+                            <td colspan="10" style="text-align: center;">Nenhum cliente inscrito ainda.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </figure>
     </main>
 </body>

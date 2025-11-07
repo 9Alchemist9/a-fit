@@ -6,6 +6,7 @@ from email.message import EmailMessage
 from datetime import datetime
 from flask import Flask, request, jsonify, render_template, Response
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from functools import wraps
 
 app = Flask(__name__)
@@ -15,6 +16,7 @@ db_path = os.path.join('/tmp', 'database.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 # --- MODELO DO BANCO DE DADOS (COM AS NOVAS COLUNAS) ---
 class Cliente(db.Model):
@@ -25,8 +27,6 @@ class Cliente(db.Model):
     servico_escolhido = db.Column(db.String(100), nullable=False)
     valor_mensal = db.Column(db.Float, nullable=False)
     data_hora = db.Column(db.DateTime, default=datetime.utcnow)
-
-    # <<< INÍCIO DAS NOVAS COLUNAS PARA A GESTÃO DE CONTRATOS >>>
     forma_pagamento = db.Column(db.String(50), nullable=True, default='Não definido')
     data_inicio = db.Column(db.Date, nullable=True)
     data_fim = db.Column(db.Date, nullable=True)
